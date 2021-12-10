@@ -10,34 +10,6 @@
 
 using namespace std;
 
-//class LimitedCounter{
-public:
-    explicit LimitedCounter(int lower = 0, int upper = 0);
-protected:
-    int low;
-    int up;
-};
-
-LimitedCounter::LimitedCounter(int lower, int upper) {
- low = lower;
- up = upper;
-}
-
-class OverflowCounter {
-public:
-    explicit OverflowCounter (int lower = 0, int upper = 0);
-
-protected:
-    int lowO;
-    int upO;
-};
-
-OverflowCounter::OverflowCounter(int lower, int upper) {
-    lowO = lower;
-    upO=upper;
-}
-
-
 class Counter {
 public:
     virtual void inc() = 0;
@@ -46,19 +18,66 @@ public:
     virtual ~Counter() {};
 };
 
+class LimitedCounter:public Counter{
+public:
+    LimitedCounter(int lower = 0, int upper = 0);
+    void inc() override{
+        count++;
+    }
+    void dec() override{
+        count--;
+    }
+    operator int () override {
+        return count;
+    }
+private:
+    int count;
+    int limit;
+};
+
+LimitedCounter::LimitedCounter(int lower, int upper):Counter() {
+ count = lower;
+ limit = upper;
+}
+
+/*
+class OverflowCounter :public Counter {
+public:
+    OverflowCounter (int lower = 0, int upper = 0);
+    void inc() override{
+        if (count < limit){
+            count++;
+        }
+
+    else {
+        count =0;
+    }
+private:
+    int count;
+    int limit;
+};
+
+OverflowCounter::OverflowCounter(int lower, int upper):Counter() {
+    count = lower;
+    limit = upper;
+}
+*/
+
+
+
+
 void UseCounter(Counter& ctr, int num){
 
 };
 
 int main(int argc, char** argv) {
-    LimitedCounter lc(0, 5);
-    OverflowCounter oc(5, 9);
+/*    LimitedCounter lc(0, 5);
+    //OverflowCounter oc(5, 9);
 
     cout << oc << endl;
-    UseCounter(oc, 5);
+    UseCounter(2, 5);
     cout << oc << endl; // should display zero
-    UseCounter(oc, -1);
-    cout << oc << endl; // should display 9
+
     oc.dec();
     cout << oc << endl; // should display 8
 
@@ -70,7 +89,13 @@ int main(int argc, char** argv) {
     for(int i = 0; i < 10; ++i) lc.inc();
     cout << lc << endl;
     UseCounter(lc, -9);
-    cout << lc << endl;
+    cout << lc << endl;*/
+
+    LimitedCounter lc(0, 5);
+
+    lc.operator int();
+    lc.inc();
+    cout << lc << endl; // should display 9
 
     return 0;
 }
